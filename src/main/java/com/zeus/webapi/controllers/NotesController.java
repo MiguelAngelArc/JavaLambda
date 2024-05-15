@@ -4,7 +4,6 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.zeus.domain.services.JwtService;
 import com.zeus.domain.services.NotesCrudService;
 import com.zeus.models.entities.Note;
 import com.zeus.models.enums.ErrorCodes;
@@ -18,7 +17,7 @@ public class NotesController {
     private NotesCrudService notesService;
     private Gson gson;
 
-    public NotesController(NotesCrudService notesService, JwtService jwtService) {
+    public NotesController(NotesCrudService notesService) {
         this.notesService = notesService;
         gson = new GsonBuilder().enableComplexMapKeySerialization().create();
     }

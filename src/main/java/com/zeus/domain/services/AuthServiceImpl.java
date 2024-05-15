@@ -1,6 +1,5 @@
 package com.zeus.domain.services;
 
-import com.google.gson.Gson;
 import com.zeus.domain.dataaccess.NoSqlRepository;
 import com.zeus.models.entities.User;
 import com.zeus.models.enums.ErrorCodes;
@@ -15,7 +14,6 @@ public class AuthServiceImpl implements AuthService {
     private JwtService jwtService;
     private NoSqlRepository<User> usersRepository;
     private PasswordHasher passwordHasher;
-    private Gson gson;
     private static final String REGEX_EMAIL = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
     private static final String REGEX_PASSWORD = "^[\\w\\d_+&*-@#%!?]{8,32}$";
     private static final String REGEX_USERNAME = "^[\\w\\d\\s]{4,64}$";
@@ -26,13 +24,12 @@ public class AuthServiceImpl implements AuthService {
         this.jwtService = jwtService;
         this.usersRepository = usersRepository;
         this.passwordHasher = passwordHasher;
-        gson = new Gson();
     }
 
     @Override
     public CompletableFuture<String> signIn(User user) {
         if (!user.getEmail().matches(REGEX_EMAIL))
-            throw new RuntimeException(ErrorCodes.INVALID_EMAIL.toString() + gson.toJson(user));
+            throw new RuntimeException(ErrorCodes.INVALID_EMAIL.toString());
         if (!user.getPassword().matches(REGEX_PASSWORD))
             throw new RuntimeException(ErrorCodes.INVALID_PASSWORD.toString());
 
@@ -57,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public CompletableFuture<String> signUp(User user) throws NoSuchAlgorithmException, InvalidKeySpecException {
         if (!user.getEmail().matches(REGEX_EMAIL))
-            throw new RuntimeException(ErrorCodes.INVALID_EMAIL.toString() +  gson.toJson(user));
+            throw new RuntimeException(ErrorCodes.INVALID_EMAIL.toString());
         if (!user.getPassword().matches(REGEX_PASSWORD))
             throw new RuntimeException(ErrorCodes.INVALID_PASSWORD.toString());
         if (!user.getUserName().matches(REGEX_USERNAME))

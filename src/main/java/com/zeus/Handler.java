@@ -79,7 +79,7 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
         UsersController usersController = new UsersController(authService);
  
         NotesCrudService notesService = new NotesCrudServiceImpl(dynamoNotesRepository);
-        NotesController notesController = new NotesController(notesService, jwtService);
+        NotesController notesController = new NotesController(notesService);
         
         routes.add(
             new LambdaHttpRoute("POST", "/notes", notesController::createNote, List.of(Middlewares.validateJwt(jwtService)))
